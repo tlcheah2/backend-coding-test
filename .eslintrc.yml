@@ -1,4 +1,6 @@
 extends: airbnb-base
+env: 
+  mocha: true
 rules:
   # Customize to throw error if code length exceed 150, ignore comments, strings and templateLiterals
   max-len:
