@@ -199,6 +199,17 @@ module.exports = (db) => {
    * @swagger
    * /rides/:
    *   get:
+   *     parameters:
+   *       - in: query
+   *         name: offset
+   *         schema:
+   *           type: integer
+   *         description: The number of items to skip before starting to collect the result set
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *         description: The numbers of items to return
    *     description: Returns all rides
    *     summary: Return all rides from DB
    *     responses:
