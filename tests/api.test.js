@@ -37,6 +37,19 @@ describe('API tests', () => {
       };
       request(app)
         .get('/rides')
+        .query({ limit: 15, offset: 0 })
+        .expect('Content-Type', /json/)
+        .expect(200, JSON.stringify(errMsg), done);
+    });
+
+    it('should VALIDATION_ERROR for invalid limit/offset', (done) => {
+      const errMsg = {
+        error_code: 'VALIDATION_ERROR',
+        message: 'Offset or Limit must be a number',
+      };
+      request(app)
+        .get('/rides')
+        .query({ limit: 'def', offset: 0 })
         .expect('Content-Type', /json/)
         .expect(200, JSON.stringify(errMsg), done);
     });
@@ -175,7 +188,7 @@ describe('API tests', () => {
         .post('/rides')
         .send(sampleBody)
         .expect('Content-Type', /json/)
-        .expect(200, done)
+        .expect(200, done);
     });
   });
 });

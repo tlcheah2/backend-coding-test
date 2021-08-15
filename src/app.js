@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 
 const jsonParser = bodyParser.json();
 
+const logger = require('./logger');
+
 /**
  * @swagger
  * components:
@@ -117,6 +119,7 @@ module.exports = (db) => {
    */
   // eslint-disable-next-line consistent-return
   app.post('/rides', jsonParser, (req, res) => {
+    logger.info('POST: Rides Request Body', req.body);
     const startLatitude = Number(req.body.start_lat);
     const startLongitude = Number(req.body.start_long);
     const endLatitude = Number(req.body.end_lat);
@@ -170,8 +173,7 @@ module.exports = (db) => {
       req.body.driver_vehicle,
     ];
 
-    // eslint-disable-next-line consistent-return
-    db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, (err) => {
+    db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, function (err) {
       if (err) {
         return res.send({
           error_code: 'SERVER_ERROR',
@@ -187,6 +189,7 @@ module.exports = (db) => {
           });
         }
 
+        logger.info('Created ride', rows);
         return res.send(rows);
       });
     });
@@ -196,6 +199,17 @@ module.exports = (db) => {
    * @swagger
    * /rides/:
    *   get:
+   *     parameters:
+   *       - in: query
+   *         name: offset
+   *         schema:
+   *           type: integer
+   *         description: The number of items to skip before starting to collect the result set
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *         description: The numbers of items to return
    *     description: Returns all rides
    *     summary: Return all rides from DB
    *     responses:
@@ -216,7 +230,16 @@ module.exports = (db) => {
    *              $ref: '#/components/schemas/ErrorResponse'
    */
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', (err, rows) => {
+    const limit = Number(req.query.limit);
+    const offset = Number(req.query.offset);
+
+    if (Number.isNaN(limit) || Number.isNaN(offset)) {
+      return res.send({
+        error_code: 'VALIDATION_ERROR',
+        message: 'Offset or Limit must be a number',
+      });
+    }
+    db.all(`SELECT * FROM Rides ORDER BY rideID LIMIT ${limit} OFFSET ${offset}`, (err, rows) => {
       if (err) {
         return res.send({
           error_code: 'SERVER_ERROR',
