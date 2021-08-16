@@ -1,0 +1,32 @@
+config:
+  target: http://localhost:8010
+  phases:
+    - duration: 30
+      arrivalRate: 100
+      name: 100 rps
+  variables:
+    id: 1
+    offset: 0
+    limit: 20
+
+scenarios:
+  - name: "Create ride"
+    flow:
+      - post:
+          url: "/rides"
+          json:
+            start_lat: 88
+            start_long: 120
+            end_lat: 85
+            end_long: 114
+            rider_name: 'Tek'
+            driver_name: 'Tek'
+            driver_vehicle: 'ABC1234'
+  - name: "Get ride"
+    flow:
+      - get:
+          url: "/rides/{{ id }}"
+  - name: "Get rides"
+    flow:
+      - get:
+          url: "/rides/?offset={{ offset }}&limit={{ limit }}"
