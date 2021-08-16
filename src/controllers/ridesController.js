@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const { logger } = require('../logger');
 const { getDatabase } = require('../bootstrap/dbConnection');
 
 exports.createRide = async (req, res) => {
