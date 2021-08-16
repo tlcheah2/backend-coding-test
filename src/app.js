@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../swaggerSpec');
 const router = require('./routes');
@@ -10,6 +11,8 @@ dbConnection.initDatabase();
 const app = express();
 // Add json body parser middleware
 app.use(express.json());
+// Add helmet middleware to add basic security
+app.use(helmet());
 // Add routing
 app.use(router);
 // Add Swagger UI Documentation
