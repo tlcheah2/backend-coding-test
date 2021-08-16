@@ -7,14 +7,14 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Simple App for Coding Test',
     contact: {
-      name: "Tek Loon",
-      url: "https://tekloon.dev",
-      email: "tekloon.1991@gmail.com",
+      name: 'Tek Loon',
+      url: 'https://tekloon.dev',
+      email: 'tekloon.1991@gmail.com',
     },
   },
   servers: [
     {
-      url: "http://localhost:8010",
+      url: 'http://localhost:8010',
     },
   ],
 };
@@ -22,7 +22,7 @@ const swaggerDefinition = {
 const options = {
   swaggerDefinition,
   // Paths to files containing OpenAPI definitions
-  apis: ['./src/*.js'],
+  apis: ['./src/routes/*.js'],
 };
 
 module.exports = swaggerJSDoc(options);
