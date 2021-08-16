@@ -1,7 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('../swaggerSpec');
+const swaggerSpec = require('./swagger/swaggerSpec');
 const router = require('./routes');
 const dbConnection = require('./bootstrap/dbConnection');
 

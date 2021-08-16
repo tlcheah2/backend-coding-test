@@ -5,3 +5,5 @@ rules:
   # Customize to throw error if code length exceed 150, ignore comments, strings and templateLiterals
   max-len:
     [error, { code: 150, ignoreComments: true, ignoreStrings: true, ignoreTemplateLiterals: true }]
+ignorePatterns:
+  - dist/**/*.js
