@@ -84,7 +84,7 @@ exports.getRides = async (req, res) => {
       message: 'Offset or Limit must be a number',
     });
   }
-  const result = await getDatabase().all(`SELECT * FROM Rides ORDER BY rideID LIMIT ${limit} OFFSET ${offset}`);
+  const result = await getDatabase().all('SELECT * FROM Rides ORDER BY rideID LIMIT ? OFFSET ?', [limit, offset]);
   logger.info('Returned rides', result);
 
   if (!result) {
@@ -105,7 +105,7 @@ exports.getRides = async (req, res) => {
 };
 
 exports.getRide = async (req, res) => {
-  const result = await getDatabase().all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`);
+  const result = await getDatabase().all('SELECT * FROM Rides WHERE rideID=?', [req.params.id]);
 
   logger.info('Retrieved ride', result);
   if (!result) {
